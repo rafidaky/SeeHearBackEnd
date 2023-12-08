@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -37,10 +40,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Implement this method to load user details from your database
-        // Example: userRepository.findByUsername(username)
-        // ...
-
-        throw new UsernameNotFoundException("User not found with username: " + username);
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return new org.springframework.security.core.userdetails.User(
+                    user.get().getUsername(),
+                    user.get().getPassword(),
+                    new ArrayList<>()
+            );
+        } else {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
     }
 }
