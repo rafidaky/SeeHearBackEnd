@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/users/register", "/api/users/login").permitAll() // Allow registration and login without authentication
+                .antMatchers("/api/users/register", "/api/users/login", "/api/items/save").permitAll() // Allow registration and login without authentication
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
